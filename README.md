@@ -10,7 +10,7 @@ A web application (www.ani.gallery) I am building for my girlfriend so I can mak
 
 *  [gatsby-typescript-boilerplate](https://www.gatsbyjs.com/starters/leachjustin18/gatsby-typescript-boilerplate)  
 
-*  [Three.js](https://threejs.org/)
+*  [react-three-fiber](https://github.com/pmndrs/react-three-fiber)
 
 ## License
 
