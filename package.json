@@ -9,8 +9,7 @@
     "start": "npm run develop"
   },
   "browserslist": [
-    "defaults",
-    "ie >=9"
+    "> 0.5% in BG"
   ],
   "dependencies": {
     "@react-three/fiber": "^7.0.6",
