@@ -6,7 +6,7 @@ import './layout.scss';
 
 interface LayoutProps {
   className?: string;
-  children: JSX.Element[];
+  children: JSX.Element[] | JSX.Element;
 }
 
 interface StaticQueryProps {
