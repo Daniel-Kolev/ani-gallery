@@ -1,23 +1,27 @@
-import React from 'react';
-import { Link } from 'gatsby';
-import Layout from '../layout';
-import Image from '../components/Image';
+import React, { useRef } from 'react';
+import { Canvas, MeshProps } from '@react-three/fiber';
 import './indexPage.scss';
 
-class IndexPage extends React.PureComponent<{}, {}> {
-  public render() {
-    return (
-      <Layout>
-        <h1>Hi people</h1>
-        <p>Welcome to your new Gatsby site.</p>
-        <p>Now go build something great.</p>
-        <figure className="indexPage__imgContainer">
-          <Image />
-        </figure>
-        <Link to="/page-2/">Go to page 2</Link>
-      </Layout>
-    );
-  }
+const Box: React.FC<MeshProps> = props => {
+  const mesh = useRef<THREE.Mesh>(null!)
+
+  return (
+    <mesh
+      {...props}
+      ref={mesh}
+    >
+      <boxGeometry args={[5, 5, 3]} />
+      <meshStandardMaterial color='orange' />
+    </mesh>
+  )
 }
+
+const IndexPage: React.FC = () => <div id='scene-container' style={{ height: '100vh', width: '100%' }}>
+  <Canvas>
+    <ambientLight />
+    <pointLight position={[10, 10, 10]} />
+    <Box position={[3, 0, 0]} />
+  </Canvas>
+</div>
 
 export default IndexPage;
