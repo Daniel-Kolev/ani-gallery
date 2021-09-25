@@ -1,12 +1,18 @@
 import React, { useRef, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Event, Vector3 } from 'three';
+import { Event, Raycaster, Mesh, Vector3, Camera } from 'three';
 import { PointerLockControls, PointerLockControlsProps } from '@react-three/drei'
 import Config from '../../config';
 
+const down = new Vector3(0, -1, 0)
 const lastPosition = new Vector3(0, Config.player.personHeight, 0)
+const raycaster = new Raycaster();
 
-const Controls: React.FC = () => {
+type ControlsProps = {
+    floors: Mesh[]
+}
+
+const Controls: React.FC<ControlsProps> = ({ floors = [] }) => {
     const controls = useRef(null!) as React.MutableRefObject<PointerLockControlsProps>
     const movement = useRef({ forward: false, backwards: false, right: false, left: false })
 
@@ -51,12 +57,30 @@ const Controls: React.FC = () => {
         const movingDirections = directions.filter((direction) => direction)
         if (!movingDirections.length) return
 
+        const canContinueMoving = isPlayerOnWalkableSurface(camera)
+        updatePositions(canContinueMoving, camera)
+        if (!canContinueMoving) return
+
         const movementSpeed = getMovementSpeed(movingDirections, delta)
         const { moveForward, moveRight } = controls.current
 
         move({ movementSpeed, action: moveForward, positiveDirection: forward, negativeDirection: backwards })
         move({ movementSpeed, action: moveRight, positiveDirection: right, negativeDirection: left })
     })
+
+    const isPlayerOnWalkableSurface = (camera: Camera) => {
+        raycaster.set(camera.position, down);
+        const intersectedObjects = raycaster.intersectObjects(floors)
+        return !!intersectedObjects.length
+    }
+
+    const updatePositions = (canContinueMoving: boolean, camera: Camera) => {
+        if (!canContinueMoving) {
+            camera.position.set(lastPosition.x, lastPosition.y, lastPosition.z)
+            return
+        }
+        lastPosition.set(camera.position.x, camera.position.y, camera.position.z)
+    }
 
     const getMovementSpeed = (movingDirections: Array<boolean>, delta: number) => {
         const multipleDirections = movingDirections.length > 1
