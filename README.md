@@ -1,6 +1,6 @@
 # ani-gallery
 
-A web application (www.ani.gallery) I am building for my girlfriend so I can make her happy and also so I can get get a glimpse of what [Gatsby](https://www.gatsbyjs.org/), [TypeScript](https://www.typescriptlang.org/) and [Three.js](https://threejs.org/) can teach me.
+A website (www.ani.gallery) I am building for my girlfriend where she can showcase her art. Built with [Gatsby](https://www.gatsbyjs.org/), [TypeScript](https://www.typescriptlang.org/) and [Three.js](https://threejs.org/) can teach me.
 
 ## Features
 
