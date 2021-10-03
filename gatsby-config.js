@@ -1,13 +1,14 @@
-const cssnano = require('css-mqpacker');
-const autoprefixer = require('autoprefixer');
-const mqPacker = require('css-mqpacker');
-
 module.exports = {
   siteMetadata: {
-    title: 'Gatsby TypeScript Boilerplate',
-    siteUrl: `https://gatsby-typescript-boilerplate.netlify.com`,
+    title: `Ani's Gallery`,
+    description: "A Gatsby web application hosted at www.ani.gallery",
+    author: `Daniel Kolev`,
+    siteUrl: `https://ani.gallery/`,
   },
   plugins: [
+    `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-image`,
+    `gatsby-plugin-sass`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -15,48 +16,19 @@ module.exports = {
         path: `${__dirname}/src/images`,
       },
     },
+    `gatsby-transformer-sharp`,
+    `gatsby-plugin-sharp`,
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: 'gatsby-typescript-boilerplate',
-        short_name: 'starter',
-        start_url: '/',
-        background_color: '#663399',
-        theme_color: '#663399',
-        display: 'minimal-ui',
-        icon: './src/favicon.png', // This path is relative to the root of the site.
+        name: `gatsby-starter-default`,
+        short_name: `starter`,
+        start_url: `/`,
+        background_color: `#663399`,
+        theme_color: `#663399`,
+        display: `minimal-ui`,
+        icon: `src/favicon.png`,
       },
     },
-    {
-      resolve: `gatsby-plugin-sass`,
-      options: {
-        postCssPlugins: [
-          autoprefixer(),
-          cssnano({
-            preset: [
-              'default',
-              {
-                autoprefixer: true,
-                discardUnused: true,
-                mergeIdents: true,
-                zindex: true,
-              },
-            ],
-          }),
-          mqPacker({
-            sort: true,
-          }),
-        ],
-      },
-    },
-    `gatsby-plugin-offline`,
-    `gatsby-plugin-favicon`,
-    `gatsby-plugin-react-helmet`,
-    `gatsby-plugin-sharp`,
-    `gatsby-plugin-sitemap`,
-    `gatsby-plugin-typescript`,
-    `gatsby-plugin-tslint`,
-    `gatsby-transformer-sharp`,
-    `gatsby-plugin-netlify`,
   ],
 };
