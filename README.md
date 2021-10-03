@@ -4,13 +4,13 @@ A web application (www.ani.gallery) I am building for my girlfriend so I can mak
 
 ## Features
 
-* An interactable 3d environment in which you can see my girlfriend's paintings
+- An interactable 3d environment in which you can see my girlfriend's paintings
 
 ## Built With
 
-*  [gatsby-typescript-boilerplate](https://www.gatsbyjs.com/starters/leachjustin18/gatsby-typescript-boilerplate)  
+- [Gatsby](https://www.gatsbyjs.org/)
 
-*  [react-three-fiber](https://github.com/pmndrs/react-three-fiber)
+- [react-three-fiber](https://github.com/pmndrs/react-three-fiber)
 
 ## License
 
