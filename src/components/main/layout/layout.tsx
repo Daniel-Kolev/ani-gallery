@@ -1,14 +1,14 @@
 import * as React from "react";
 import { useStaticQuery, graphql } from "gatsby";
 
-import Header from "./header";
-import "./layout.css";
+import Header from "../header/header";
+import "./layout.scss";
 
 interface LayoutProps {
   children: JSX.Element[] | JSX.Element;
 }
 
-const Layout = ({ children }: LayoutProps): JSX.Element => {
+const Layout: React.FC<LayoutProps> = ({ children }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
