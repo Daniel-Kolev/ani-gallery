@@ -90,14 +90,17 @@ const Controls: React.FC<ControlsProps> = ({ floors = [] }) => {
         return Config.player.speedMultiplier * baseSpeed * delta
     }
 
-    type MoveProps = {
+    const move = ({ 
+        movementSpeed, 
+        action, 
+        positiveDirection, 
+        negativeDirection 
+    }: {
         movementSpeed: number,
         action: Function | undefined,
         positiveDirection: boolean,
         negativeDirection: boolean,
-    }
-
-    const move = ({ movementSpeed, action, positiveDirection, negativeDirection }: MoveProps) => {
+    }) => {
         positiveDirection && action && action(movementSpeed)
         negativeDirection && action && action(-movementSpeed)
     }
