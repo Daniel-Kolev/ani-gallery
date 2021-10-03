@@ -1,27 +1,16 @@
-import React, { useRef } from 'react';
-import { Canvas, MeshProps } from '@react-three/fiber';
-import './indexPage.scss';
+import React from "react";
 
-const Box: React.FC<MeshProps> = props => {
-  const mesh = useRef<THREE.Mesh>(null!)
+import Canvas from "../components/three/canvas";
+import Layout from "../components/main/layout/layout";
+import SEO from "../components/main/seo/seo";
 
-  return (
-    <mesh
-      {...props}
-      ref={mesh}
-    >
-      <boxGeometry args={[5, 5, 3]} />
-      <meshStandardMaterial color='orange' />
-    </mesh>
-  )
-}
-
-const IndexPage: React.FC = () => <div id='scene-container' style={{ height: '100vh', width: '100%' }}>
-  <Canvas>
-    <ambientLight />
-    <pointLight position={[10, 10, 10]} />
-    <Box position={[3, 0, 0]} />
-  </Canvas>
-</div>
+const IndexPage = (): JSX.Element => (
+  <Layout>
+    <SEO title="Home" />
+    <div id="scene-container" style={{ height: "100vh", width: "100%" }}>
+      <Canvas />
+    </div>
+  </Layout>
+);
 
 export default IndexPage;
