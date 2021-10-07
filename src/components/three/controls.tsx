@@ -4,9 +4,9 @@ import {
   PointerLockControls,
   PointerLockControlsProps,
 } from "@react-three/drei";
-import Config from "../../config";
-import useMovement from "./hooks/useMovement";
-import useCollision from "./hooks/useCollision";
+import Config from "config";
+import useMovement from "components/three/hooks/useMovement";
+import useCollision from "components/three/hooks/useCollision";
 
 const defaultPosition = new Vector3(0, Config.player.personHeight, 0);
 

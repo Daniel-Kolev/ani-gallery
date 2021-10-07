@@ -1,6 +1,10 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "*": ["types/*", "*"]
+    },
     "target": "esnext",
     "module": "commonjs",
     "lib": ["dom", "es2015", "es2017"],

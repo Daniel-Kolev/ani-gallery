@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import Config from "../../../config";
+import Config from "config";
 
 const useMovement = (canContinueMoving?: () => boolean): void => {
   const directions = useRef({

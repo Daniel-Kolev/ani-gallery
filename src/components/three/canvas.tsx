@@ -1,8 +1,8 @@
 import React from "react";
 import { Canvas } from "@react-three/fiber";
-import Box from "./box";
-import Floors from "../../utils/floors";
-import Controls from "./controls";
+import Box from "components/three/box";
+import Floors from "utils/floor";
+import Controls from "components/three/controls";
 
 const IndexPage: React.FC = () => (
   <Canvas>
