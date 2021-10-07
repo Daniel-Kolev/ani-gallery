@@ -29,7 +29,10 @@ const Controls: React.FC<ControlsProps> = ({ floor }) => {
     defaultPosition,
     floor,
   });
-  useMovement(() => !updatePosition());
+  useMovement({
+    object: camera as Object3D,
+    canContinueMoving: () => !updatePosition(),
+  });
 
   return <PointerLockControls ref={controls} />;
 };

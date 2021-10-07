@@ -11,11 +11,10 @@ interface CollisionProps {
   floor?: Mesh;
 }
 
-/*
-This hook has two purposes - detect collisions and update a position
-Ideally we should have both concerns seperated
-todo: refactor
-*/
+// This hook has two purposes - detect collisions and update a position
+// Ideally we should have both concerns seperated
+// todo: refactor (maybe move position setting to useMovement)
+
 const useCollision = ({
   object,
   defaultPosition,

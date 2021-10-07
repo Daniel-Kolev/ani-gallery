@@ -1,8 +1,14 @@
 import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import Config from "config";
+import { Object3D, Vector3 } from "three";
 
-const useMovement = (canContinueMoving?: () => boolean): void => {
+const movementVector = new Vector3();
+interface MovementProps {
+  object: Object3D;
+  canContinueMoving?: () => boolean;
+}
+const useMovement = ({ object, canContinueMoving }: MovementProps): void => {
   const directions = useRef({
     forward: false,
     backwards: false,
@@ -53,7 +59,6 @@ const useMovement = (canContinueMoving?: () => boolean): void => {
     if (typeof canContinueMoving === "function" && !canContinueMoving()) return;
 
     const movementSpeed = getMovementSpeed(activeDirections, delta);
-    const { moveForward, moveRight } = controls.current;
 
     move({
       value: movementSpeed,
@@ -94,6 +99,23 @@ const useMovement = (canContinueMoving?: () => boolean): void => {
     if (positiveDirection && negativeDirection) return;
     positiveDirection && action && action(value);
     negativeDirection && action && action(-value);
+  };
+
+  // moveForward and moveRight are adapted from PointerLockControls
+  // so they can be reused with any other Controls
+  // might be a good idea create my own controls wrapper which has this logic inside
+  // todo: refactor these methods + move()
+  const moveForward = (distance: number) => {
+    movementVector.setFromMatrixColumn(object.matrix, 0);
+    movementVector.crossVectors(object.up, movementVector);
+
+    object.position.addScaledVector(movementVector, distance);
+  };
+
+  const moveRight = (distance: number) => {
+    movementVector.setFromMatrixColumn(object.matrix, 0);
+
+    object.position.addScaledVector(movementVector, distance);
   };
 };
 
