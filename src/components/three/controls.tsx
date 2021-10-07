@@ -1,62 +1,35 @@
-import React, { useRef, useEffect } from "react";
-import { useFrame } from "@react-three/fiber";
+import React, { useState, useRef, useEffect } from "react";
 import { Mesh, Object3D, Vector3 } from "three";
 import {
   PointerLockControls,
   PointerLockControlsProps,
 } from "@react-three/drei";
 import Config from "../../config";
-import usePosition from "./hooks/usePosition";
 import useMovement from "./hooks/useMovement";
+import useCollision from "./hooks/useCollision";
 
 const defaultPosition = new Vector3(0, Config.player.personHeight, 0);
 
-type ControlsProps = {
+interface ControlsProps {
   floor: Mesh;
-};
+}
 
 const Controls: React.FC<ControlsProps> = ({ floor }) => {
+  const [camera, setCamera] = useState<Object3D>();
   const controls = useRef() as React.MutableRefObject<PointerLockControlsProps>;
-  const {
-    current: { camera },
-  } = controls;
-  const { updatePositions } = usePosition({
+
+  useEffect(() => {
+    if (!controls.current?.camera) throw Error("camera is not defined");
+
+    setCamera(controls.current.camera);
+  }, []);
+
+  const updatePosition = useCollision({
     object: camera as Object3D,
     defaultPosition,
     floor,
   });
-  const { movement, move, getMovementSpeed } = useMovement();
-
-  useFrame((state, delta) => {
-    const {
-      current: { camera },
-    } = controls;
-    if (!camera) return;
-
-    const { forward, backwards, right, left } = movement;
-    const directions = [forward, right, backwards, left];
-    const movingDirections = directions.filter((direction) => direction);
-    if (!movingDirections.length) return;
-
-    const canContinueMoving = updatePositions();
-    if (!canContinueMoving) return;
-
-    const movementSpeed = getMovementSpeed(movingDirections, delta);
-    const { moveForward, moveRight } = controls.current;
-
-    move({
-      movementSpeed,
-      action: moveForward,
-      positiveDirection: forward,
-      negativeDirection: backwards,
-    });
-    move({
-      movementSpeed,
-      action: moveRight,
-      positiveDirection: right,
-      negativeDirection: left,
-    });
-  });
+  useMovement(() => !updatePosition());
 
   return <PointerLockControls ref={controls} />;
 };

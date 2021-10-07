@@ -1,32 +1,39 @@
 import { useEffect, useRef } from "react";
+import { useFrame } from "@react-three/fiber";
 import Config from "../../../config";
 
-type MoveProps = {
-  movementSpeed: number;
-  action: ((distance: number) => void) | undefined;
-  positiveDirection: boolean;
-  negativeDirection: boolean;
-};
-export default (): {
-  movement: {
-    forward: boolean;
-    backwards: boolean;
-    right: boolean;
-    left: boolean;
-  };
-  move: ({
-    movementSpeed,
-    action,
-    positiveDirection,
-    negativeDirection,
-  }: MoveProps) => void;
-  getMovementSpeed: (movingDirections: Array<boolean>, delta: number) => number;
-} => {
-  const movement = useRef({
+const useMovement = (canContinueMoving: () => boolean): void => {
+  const directions = useRef({
     forward: false,
     backwards: false,
     right: false,
     left: false,
+  });
+
+  useFrame((state, delta) => {
+    const { forward, right, backwards, left } = directions.current;
+    const activeDirections = [forward, right, backwards, left].filter(
+      (direction) => direction
+    );
+    if (!activeDirections.length) return;
+
+    if (canContinueMoving && !canContinueMoving()) return;
+
+    const movementSpeed = getMovementSpeed(activeDirections, delta);
+    const { moveForward, moveRight } = controls.current;
+
+    move({
+      value: movementSpeed,
+      action: moveForward,
+      positiveDirection: forward,
+      negativeDirection: backwards,
+    });
+    move({
+      value: movementSpeed,
+      action: moveRight,
+      positiveDirection: right,
+      negativeDirection: left,
+    });
   });
 
   useEffect(() => {
@@ -34,22 +41,22 @@ export default (): {
       switch (event.code) {
         case "ArrowUp":
         case "KeyW":
-          movement.current.forward = event.type === "keydown";
+          directions.current.forward = event.type === "keydown";
           break;
 
         case "ArrowDown":
         case "KeyS":
-          movement.current.backwards = event.type === "keydown";
+          directions.current.backwards = event.type === "keydown";
           break;
 
         case "ArrowRight":
         case "KeyD":
-          movement.current.right = event.type === "keydown";
+          directions.current.right = event.type === "keydown";
           break;
 
         case "ArrowLeft":
         case "KeyA":
-          movement.current.left = event.type === "keydown";
+          directions.current.left = event.type === "keydown";
           break;
       }
     };
@@ -74,14 +81,20 @@ export default (): {
   };
 
   const move = ({
-    movementSpeed,
+    value,
     action,
     positiveDirection,
     negativeDirection,
-  }: MoveProps) => {
-    positiveDirection && action && action(movementSpeed);
-    negativeDirection && action && action(-movementSpeed);
+  }: {
+    value: number;
+    action: ((distance: number) => void) | undefined;
+    positiveDirection: boolean;
+    negativeDirection: boolean;
+  }) => {
+    if (positiveDirection && negativeDirection) return;
+    positiveDirection && action && action(value);
+    negativeDirection && action && action(-value);
   };
-
-  return { movement: movement.current, move, getMovementSpeed };
 };
+
+export default useMovement;
