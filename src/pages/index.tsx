@@ -1,7 +1,7 @@
 import React from "react";
 
-import Canvas from "../components/three/canvas";
-import SEO from "../components/main/seo/seo";
+import Canvas from "components/three/canvas";
+import SEO from "components/main/seo/seo";
 
 const IndexPage: React.FC = () => (
   <>
