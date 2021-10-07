@@ -2,38 +2,12 @@ import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import Config from "../../../config";
 
-const useMovement = (canContinueMoving: () => boolean): void => {
+const useMovement = (canContinueMoving?: () => boolean): void => {
   const directions = useRef({
     forward: false,
     backwards: false,
     right: false,
     left: false,
-  });
-
-  useFrame((state, delta) => {
-    const { forward, right, backwards, left } = directions.current;
-    const activeDirections = [forward, right, backwards, left].filter(
-      (direction) => direction
-    );
-    if (!activeDirections.length) return;
-
-    if (canContinueMoving && !canContinueMoving()) return;
-
-    const movementSpeed = getMovementSpeed(activeDirections, delta);
-    const { moveForward, moveRight } = controls.current;
-
-    move({
-      value: movementSpeed,
-      action: moveForward,
-      positiveDirection: forward,
-      negativeDirection: backwards,
-    });
-    move({
-      value: movementSpeed,
-      action: moveRight,
-      positiveDirection: right,
-      negativeDirection: left,
-    });
   });
 
   useEffect(() => {
@@ -68,6 +42,32 @@ const useMovement = (canContinueMoving: () => boolean): void => {
       document.removeEventListener("keydown", onKeyAction);
     };
   }, []);
+
+  useFrame((state, delta) => {
+    const { forward, right, backwards, left } = directions.current;
+    const activeDirections = [forward, right, backwards, left].filter(
+      (direction) => direction
+    );
+    if (!activeDirections.length) return;
+
+    if (typeof canContinueMoving === "function" && !canContinueMoving()) return;
+
+    const movementSpeed = getMovementSpeed(activeDirections, delta);
+    const { moveForward, moveRight } = controls.current;
+
+    move({
+      value: movementSpeed,
+      action: moveForward,
+      positiveDirection: forward,
+      negativeDirection: backwards,
+    });
+    move({
+      value: movementSpeed,
+      action: moveRight,
+      positiveDirection: right,
+      negativeDirection: left,
+    });
+  });
 
   const getMovementSpeed = (
     movingDirections: Array<boolean>,
