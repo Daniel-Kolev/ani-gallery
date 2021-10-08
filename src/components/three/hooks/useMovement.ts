@@ -1,65 +1,45 @@
-import { useEffect, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import Config from "config";
 import { Object3D, Vector3 } from "three";
+import useLastPosition, {
+  LastPositionProps,
+} from "components/three/hooks/useLastPosition";
+import useCollision, {
+  CollisionProps,
+} from "components/three/hooks/useCollision";
+import useDirections from "components/three/hooks/useDirections";
 
 const movementVector = new Vector3();
-interface MovementProps {
+interface MovementProps extends CollisionProps, LastPositionProps {
   object: Object3D;
-  canContinueMoving?: () => boolean;
 }
-const useMovement = ({ object, canContinueMoving }: MovementProps): void => {
-  const directions = useRef({
-    forward: false,
-    backwards: false,
-    right: false,
-    left: false,
+
+const useMovement = ({
+  object,
+  floor,
+  defaultPosition,
+}: MovementProps): void => {
+  const { directions, getActiveDirections } = useDirections();
+  const isObjectAirborne = useCollision({
+    object,
+    floor,
+  });
+  const returnToLastPosition = useLastPosition({
+    object,
+    defaultPosition,
   });
 
-  useEffect(() => {
-    const onKeyAction = (event: KeyboardEvent) => {
-      switch (event.code) {
-        case "ArrowUp":
-        case "KeyW":
-          directions.current.forward = event.type === "keydown";
-          break;
-
-        case "ArrowDown":
-        case "KeyS":
-          directions.current.backwards = event.type === "keydown";
-          break;
-
-        case "ArrowRight":
-        case "KeyD":
-          directions.current.right = event.type === "keydown";
-          break;
-
-        case "ArrowLeft":
-        case "KeyA":
-          directions.current.left = event.type === "keydown";
-          break;
-      }
-    };
-
-    document.addEventListener("keydown", onKeyAction);
-    document.addEventListener("keyup", onKeyAction);
-    return () => {
-      document.removeEventListener("keydown", onKeyAction);
-      document.removeEventListener("keydown", onKeyAction);
-    };
-  }, []);
-
   useFrame((state, delta) => {
-    const { forward, right, backwards, left } = directions.current;
-    const activeDirections = [forward, right, backwards, left].filter(
-      (direction) => direction
-    );
-    if (!activeDirections.length) return;
+    const numberOfActiveDirections = getActiveDirections().length;
+    if (!numberOfActiveDirections) return;
 
-    if (typeof canContinueMoving === "function" && !canContinueMoving()) return;
+    const isAirborne = isObjectAirborne();
+    returnToLastPosition(isAirborne);
+    if (isAirborne) return;
 
-    const movementSpeed = getMovementSpeed(activeDirections, delta);
+    const movementSpeed = getMovementSpeed(numberOfActiveDirections > 1, delta);
 
+    const { forward, right, backwards, left } = directions;
     move({
       value: movementSpeed,
       action: moveForward,
@@ -74,11 +54,7 @@ const useMovement = ({ object, canContinueMoving }: MovementProps): void => {
     });
   });
 
-  const getMovementSpeed = (
-    movingDirections: Array<boolean>,
-    delta: number
-  ) => {
-    const multipleDirections = movingDirections.length > 1;
+  const getMovementSpeed = (multipleDirections: boolean, delta: number) => {
     // 0.7 is derived from the equivalent unit vector from (1,0) + (0,1)
     // https://forum.unity.com/threads/diagonal-movement-speed-to-fast.271703/#post-1794487
     const baseSpeed = multipleDirections ? 0.7 : 1;
