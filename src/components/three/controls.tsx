@@ -6,7 +6,6 @@ import {
 } from "@react-three/drei";
 import Config from "config";
 import useMovement from "components/three/hooks/useMovement";
-import useCollision from "components/three/hooks/useCollision";
 
 const defaultPosition = new Vector3(0, Config.player.personHeight, 0);
 
@@ -24,14 +23,8 @@ const Controls: React.FC<ControlsProps> = ({ floor }) => {
     setCamera(controls.current.camera);
   }, []);
 
-  const updatePosition = useCollision({
-    object: camera as Object3D,
-    defaultPosition,
-    floor,
-  });
   useMovement({
     object: camera as Object3D,
-    canContinueMoving: () => !updatePosition(),
   });
 
   return <PointerLockControls ref={controls} />;
