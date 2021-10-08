@@ -17,7 +17,7 @@ const useLastPosition = ({ object, defaultPosition }: LastPositionProps) => {
       defaultPosition.y,
       defaultPosition.z
     );
-  }, []);
+  }, [object]);
 
   const returnToLastPosition = (isAirborne = false) => {
     if (!object) return false;
