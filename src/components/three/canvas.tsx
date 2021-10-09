@@ -13,7 +13,9 @@ const IndexPage: React.FC = () => {
       <Canvas>
         <Controls floor={floor} />
         <ambientLight />
-        <Painting />
+        <Suspense fallback={null}>
+          <Painting />
+        </Suspense>
         <Suspense fallback={null}>
           <Gallery />
         </Suspense>

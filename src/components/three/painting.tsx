@@ -1,19 +1,14 @@
+import { useTexture } from "@react-three/drei";
 import React from "react";
-import {
-  TextureLoader,
-  MeshBasicMaterial,
-  PlaneGeometry,
-  sRGBEncoding,
-} from "three";
-const textureLoader = new TextureLoader();
-const texture = textureLoader.load("paintings/samodiva.png");
-texture.encoding = sRGBEncoding;
-const geometry = new PlaneGeometry(1, 1.3);
-const material = new MeshBasicMaterial({
-  map: texture,
-});
+import { MeshBasicMaterial, PlaneGeometry, sRGBEncoding } from "three";
 
 const Painting = (props) => {
+  const texture = useTexture("paintings/samodiva.png");
+  texture.encoding = sRGBEncoding;
+  const geometry = new PlaneGeometry(1, 1.3);
+  const material = new MeshBasicMaterial({
+    map: texture,
+  });
   return (
     <>
       <mesh {...props} position={[0, 1.6, -5.7]} args={[geometry, material]} />
