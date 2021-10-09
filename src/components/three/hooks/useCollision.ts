@@ -1,6 +1,6 @@
 import { Raycaster, Vector3, Object3D, Mesh } from "three";
 
-const down = new Vector3(0, -3, 0);
+const down = new Vector3(0, -1, 0);
 const raycaster = new Raycaster();
 
 export interface CollisionProps {
