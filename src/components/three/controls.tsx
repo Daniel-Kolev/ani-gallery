@@ -8,7 +8,6 @@ import Config from "config";
 import useMovement from "components/three/hooks/useMovement";
 import { useThree } from "@react-three/fiber";
 
-const defaultPosition = new Vector3(0, Config.player.personHeight, 0);
 interface ControlsProps {
   floor: Mesh;
 }
@@ -22,7 +21,6 @@ const Controls: React.FC<ControlsProps> = ({ floor }) => {
 
   useMovement({
     object: defaultCamera as Object3D,
-    defaultPosition,
   });
 
   const hasCursor = matchMedia("(pointer:fine)").matches;

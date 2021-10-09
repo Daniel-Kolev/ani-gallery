@@ -14,11 +14,7 @@ interface MovementProps extends CollisionProps, LastPositionProps {
   object: Object3D;
 }
 
-const useMovement = ({
-  object,
-  floor,
-  defaultPosition,
-}: MovementProps): void => {
+const useMovement = ({ object, floor }: MovementProps): void => {
   const { directions, getActiveDirections } = useDirections();
   const isObjectAirborne = useCollision({
     object,
@@ -26,7 +22,6 @@ const useMovement = ({
   });
   const returnToLastPosition = useLastPosition({
     object,
-    defaultPosition,
   });
 
   useFrame((state, delta) => {
