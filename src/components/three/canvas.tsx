@@ -11,7 +11,7 @@ const IndexPage: React.FC = () => {
       <Controls floor={floor} />
       <ambientLight />
       <Suspense fallback={null}>
-        <Painting />
+        <Painting name="samodiva" />
       </Suspense>
       <Suspense fallback={null}>
         <Gallery />
