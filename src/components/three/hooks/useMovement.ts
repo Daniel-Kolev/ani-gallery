@@ -14,11 +14,7 @@ interface MovementProps extends CollisionProps, LastPositionProps {
   object: Object3D;
 }
 
-const useMovement = ({
-  object,
-  floor,
-  defaultPosition,
-}: MovementProps): void => {
+const useMovement = ({ object, floor }: MovementProps): void => {
   const { directions, getActiveDirections } = useDirections();
   const isObjectAirborne = useCollision({
     object,
@@ -26,7 +22,6 @@ const useMovement = ({
   });
   const returnToLastPosition = useLastPosition({
     object,
-    defaultPosition,
   });
 
   useFrame((state, delta) => {
@@ -77,10 +72,6 @@ const useMovement = ({
     negativeDirection && action && action(-value);
   };
 
-  // moveForward and moveRight are adapted from PointerLockControls
-  // so they can be reused with any other Controls
-  // might be a good idea create my own controls wrapper which has this logic inside
-  // todo: refactor these methods + move()
   const moveForward = (distance: number) => {
     movementVector.setFromMatrixColumn(object.matrix, 0);
     movementVector.crossVectors(object.up, movementVector);

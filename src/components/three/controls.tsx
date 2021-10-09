@@ -1,34 +1,49 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Mesh, Object3D, Vector3 } from "three";
+import React, { useEffect, useRef } from "react";
+import { Mesh, Object3D } from "three";
 import {
   PointerLockControls,
-  PointerLockControlsProps,
+  DeviceOrientationControls,
+  DeviceOrientationControlsProps,
 } from "@react-three/drei";
 import Config from "config";
 import useMovement from "components/three/hooks/useMovement";
-
-const defaultPosition = new Vector3(0, Config.player.personHeight, 0);
-
+import { useThree } from "@react-three/fiber";
 interface ControlsProps {
   floor: Mesh;
 }
 
 const Controls: React.FC<ControlsProps> = ({ floor }) => {
-  const [camera, setCamera] = useState<Object3D>();
-  const controls = useRef() as React.MutableRefObject<PointerLockControlsProps>;
+  const defaultCamera = useThree(({ camera }) => camera);
+  const deviceOrientationControls = useRef<DeviceOrientationControlsProps>();
+  const hasCursor = matchMedia("(pointer:fine)").matches;
 
   useEffect(() => {
-    if (!controls.current?.camera) throw Error("camera is not defined");
+    defaultCamera.position.setY(Config.player.personHeight);
+    if (hasCursor) return;
 
-    setCamera(controls.current.camera);
+    const reConnectListeners = () => {
+      if (!deviceOrientationControls.current) return;
+
+      if (typeof deviceOrientationControls.current.disconnect === "function")
+        deviceOrientationControls.current.disconnect();
+      if (typeof deviceOrientationControls.current.connect === "function")
+        deviceOrientationControls.current.connect();
+    };
+    document.addEventListener("touchend", reConnectListeners, { once: true });
   }, []);
 
   useMovement({
-    object: camera as Object3D,
-    defaultPosition,
+    object: defaultCamera as Object3D,
   });
 
-  return <PointerLockControls ref={controls} />;
+  return hasCursor ? (
+    <PointerLockControls />
+  ) : (
+    <DeviceOrientationControls
+      screenOrientation={90}
+      ref={deviceOrientationControls}
+    />
+  );
 };
 
 export default Controls;
