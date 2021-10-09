@@ -2,6 +2,10 @@
 
 A website (www.ani.gallery) I am building for my girlfriend where she can showcase her art. Built with [Gatsby](https://www.gatsbyjs.org/), [TypeScript](https://www.typescriptlang.org/) and [Three.js](https://threejs.org/) can teach me.
 
+<video autoplay loop>
+    <source src="ani-gallery-demo.mp4" type="video/mp4">
+</video>
+
 ## Features
 
 - An interactable 3d environment in which you can see my girlfriend's paintings
