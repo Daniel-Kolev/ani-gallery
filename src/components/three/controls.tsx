@@ -1,30 +1,49 @@
-import React, { useEffect } from "react";
-import { Mesh, Object3D, PerspectiveCamera, Vector3 } from "three";
+import React, { useEffect, useRef } from "react";
+import { Mesh, Object3D } from "three";
 import {
   PointerLockControls,
   DeviceOrientationControls,
+  DeviceOrientationControlsProps,
 } from "@react-three/drei";
 import Config from "config";
 import useMovement from "components/three/hooks/useMovement";
 import { useThree } from "@react-three/fiber";
-
 interface ControlsProps {
   floor: Mesh;
 }
 
 const Controls: React.FC<ControlsProps> = ({ floor }) => {
   const defaultCamera = useThree(({ camera }) => camera);
+  const deviceOrientationControls = useRef<DeviceOrientationControlsProps>();
+  const hasCursor = matchMedia("(pointer:fine)").matches;
 
   useEffect(() => {
     defaultCamera.position.setY(Config.player.personHeight);
+    if (hasCursor) return;
+
+    const reConnectListeners = () => {
+      if (!deviceOrientationControls.current) return;
+
+      if (typeof deviceOrientationControls.current.disconnect === "function")
+        deviceOrientationControls.current.disconnect();
+      if (typeof deviceOrientationControls.current.connect === "function")
+        deviceOrientationControls.current.connect();
+    };
+    document.addEventListener("touchend", reConnectListeners, { once: true });
   }, []);
 
   useMovement({
     object: defaultCamera as Object3D,
   });
 
-  const hasCursor = matchMedia("(pointer:fine)").matches;
-  return hasCursor ? <PointerLockControls /> : <DeviceOrientationControls />;
+  return hasCursor ? (
+    <PointerLockControls />
+  ) : (
+    <DeviceOrientationControls
+      screenOrientation={90}
+      ref={deviceOrientationControls}
+    />
+  );
 };
 
 export default Controls;
