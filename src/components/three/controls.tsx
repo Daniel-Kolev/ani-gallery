@@ -18,7 +18,7 @@ const Controls: React.FC<ControlsProps> = ({ floor }) => {
   const hasCursor = matchMedia("(pointer:fine)").matches;
 
   useEffect(() => {
-    defaultCamera.position.setY(Config.player.personHeight);
+    defaultCamera.position.set(0, Config.player.personHeight, 0);
     if (hasCursor) return;
 
     const reConnectListeners = () => {
