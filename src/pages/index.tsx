@@ -2,6 +2,7 @@ import React from "react";
 
 import Canvas from "components/three/canvas";
 import SEO from "components/main/seo/seo";
+import "./index.css";
 
 const IndexPage: React.FC = () => (
   <>
