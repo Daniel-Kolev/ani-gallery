@@ -24,6 +24,7 @@ const Controls: React.FC<ControlsProps> = ({ floor }) => {
 
     const connectListeners = () => {
       console.log(deviceOrientationControls.current);
+      deviceOrientationControls.current.disconnect();
       deviceOrientationControls.current.connect();
     };
     document.addEventListener("touchend", connectListeners, false);
