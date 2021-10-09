@@ -9,7 +9,7 @@ import Config from "config";
 import useMovement from "components/three/hooks/useMovement";
 import { useThree } from "@react-three/fiber";
 interface ControlsProps {
-  floor: Mesh;
+  floor?: Mesh;
 }
 
 const Controls: React.FC<ControlsProps> = ({ floor }) => {
@@ -34,6 +34,7 @@ const Controls: React.FC<ControlsProps> = ({ floor }) => {
 
   useMovement({
     object: defaultCamera as Object3D,
+    floor,
   });
 
   return hasCursor ? (

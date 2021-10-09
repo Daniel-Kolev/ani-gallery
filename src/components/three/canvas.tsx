@@ -1,22 +1,25 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import floor from "utils/floors";
 import Controls from "components/three/controls";
 import Gallery from "components/three/gallery";
 import Painting from "components/three/painting";
 import { Loader as CanvasLoader } from "@react-three/drei";
 
 const IndexPage: React.FC = () => {
+  const [floor, setFloor] = useState();
+
   return (
     <>
       <Canvas>
-        <Controls floor={floor} />
+        <Suspense fallback={null}>
+          <Controls floor={floor} />
+        </Suspense>
         <ambientLight />
         <Suspense fallback={null}>
           <Painting name="samodiva" />
         </Suspense>
         <Suspense fallback={null}>
-          <Gallery />
+          <Gallery setFloor={setFloor} />
         </Suspense>
       </Canvas>
       <CanvasLoader />
