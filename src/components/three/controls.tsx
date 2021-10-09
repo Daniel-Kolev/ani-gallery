@@ -1,34 +1,30 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Mesh, Object3D, Vector3 } from "three";
+import React, { useEffect } from "react";
+import { Mesh, Object3D, PerspectiveCamera, Vector3 } from "three";
 import {
   PointerLockControls,
-  PointerLockControlsProps,
+  DeviceOrientationControls,
 } from "@react-three/drei";
 import Config from "config";
 import useMovement from "components/three/hooks/useMovement";
-
-const defaultPosition = new Vector3(0, Config.player.personHeight, 0);
+import { useThree } from "@react-three/fiber";
 
 interface ControlsProps {
   floor: Mesh;
 }
 
 const Controls: React.FC<ControlsProps> = ({ floor }) => {
-  const [camera, setCamera] = useState<Object3D>();
-  const controls = useRef() as React.MutableRefObject<PointerLockControlsProps>;
+  const defaultCamera = useThree(({ camera }) => camera);
 
   useEffect(() => {
-    if (!controls.current?.camera) throw Error("camera is not defined");
-
-    setCamera(controls.current.camera);
+    defaultCamera.position.setY(Config.player.personHeight);
   }, []);
 
   useMovement({
-    object: camera as Object3D,
-    defaultPosition,
+    object: defaultCamera as Object3D,
   });
 
-  return <PointerLockControls ref={controls} />;
+  const hasCursor = matchMedia("(pointer:fine)").matches;
+  return hasCursor ? <PointerLockControls /> : <DeviceOrientationControls />;
 };
 
 export default Controls;

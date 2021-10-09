@@ -9,36 +9,54 @@ const useDirections = () => {
   });
 
   useEffect(() => {
-    const onKeyAction = (event: KeyboardEvent) => {
-      switch (event.code) {
-        case "ArrowUp":
-        case "KeyW":
-          directions.current.forward = event.type === "keydown";
-          break;
+    const connectDesktopEvents = () => {
+      const onKeyAction = (event: KeyboardEvent) => {
+        switch (event.code) {
+          case "ArrowUp":
+          case "KeyW":
+            directions.current.forward = event.type === "keydown";
+            break;
 
-        case "ArrowDown":
-        case "KeyS":
-          directions.current.backwards = event.type === "keydown";
-          break;
+          case "ArrowDown":
+          case "KeyS":
+            directions.current.backwards = event.type === "keydown";
+            break;
 
-        case "ArrowRight":
-        case "KeyD":
-          directions.current.right = event.type === "keydown";
-          break;
+          case "ArrowRight":
+          case "KeyD":
+            directions.current.right = event.type === "keydown";
+            break;
 
-        case "ArrowLeft":
-        case "KeyA":
-          directions.current.left = event.type === "keydown";
-          break;
-      }
+          case "ArrowLeft":
+          case "KeyA":
+            directions.current.left = event.type === "keydown";
+            break;
+        }
+      };
+
+      document.addEventListener("keydown", onKeyAction);
+      document.addEventListener("keyup", onKeyAction);
+      return () => {
+        document.removeEventListener("keydown", onKeyAction);
+        document.removeEventListener("keydown", onKeyAction);
+      };
     };
 
-    document.addEventListener("keydown", onKeyAction);
-    document.addEventListener("keyup", onKeyAction);
-    return () => {
-      document.removeEventListener("keydown", onKeyAction);
-      document.removeEventListener("keydown", onKeyAction);
+    const connectMobileEvents = () => {
+      const onTouch = (event: TouchEvent) => {
+        directions.current.forward = event.type === "touchstart";
+      };
+
+      document.addEventListener("touchstart", onTouch, false);
+      document.addEventListener("touchend", onTouch, false);
+      return () => {
+        document.removeEventListener("touchstart", onTouch, false);
+        document.removeEventListener("touchend", onTouch, false);
+      };
     };
+
+    const hasCursor = matchMedia("(pointer:fine)").matches;
+    hasCursor ? connectDesktopEvents() : connectMobileEvents();
   }, []);
 
   const getActiveDirections = () => {
