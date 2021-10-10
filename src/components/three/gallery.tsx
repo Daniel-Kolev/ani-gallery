@@ -10,7 +10,7 @@ interface GalleryProps {
   setFloor: (mesh: Mesh) => void;
 }
 
-const Gallery: React.FC<GalleryProps> = ({ setFloor }) => {
+const Gallery = ({ setFloor }: GalleryProps): JSX.Element => {
   const gltf = useGLTF(filePath);
 
   useEffect(() => {

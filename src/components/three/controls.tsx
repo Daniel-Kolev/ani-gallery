@@ -12,7 +12,7 @@ interface ControlsProps {
   floor?: Mesh;
 }
 
-const Controls: React.FC<ControlsProps> = ({ floor }) => {
+const Controls = ({ floor }: ControlsProps): JSX.Element => {
   const defaultCamera = useThree(({ camera }) => camera);
   const deviceOrientationControls = useRef<DeviceOrientationControlsProps>();
   const hasCursor = matchMedia("(pointer:fine)").matches;

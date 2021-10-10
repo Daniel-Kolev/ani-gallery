@@ -3,7 +3,7 @@ import * as React from "react";
 import Layout from "components/main/layout/layout";
 import Seo from "components/main/seo/seo";
 
-const NotFoundPage: React.FC = () => (
+const NotFoundPage = (): JSX.Element => (
   <Layout>
     <Seo title="404: Not found" />
     <h1>404: Not Found</h1>

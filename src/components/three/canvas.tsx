@@ -5,7 +5,7 @@ import Gallery from "components/three/gallery";
 import Painting from "components/three/painting";
 import { Loader as CanvasLoader, Preload } from "@react-three/drei";
 
-const IndexPage: React.FC = () => {
+const IndexPage = (): JSX.Element => {
   const [floor, setFloor] = useState();
 
   return (
