@@ -4,11 +4,11 @@ import { MeshBasicMaterial, PlaneGeometry, sRGBEncoding } from "three";
 
 // this seems like a generic interface (maybe move it to a generic folder?)
 // todo: extract this
-interface Painting {
+interface PaintingProps {
   name: string;
 }
 
-const Painting: React.FC<Painting> = ({ name = "" }) => {
+const Painting = ({ name = "" }: PaintingProps): JSX.Element => {
   const texture = useTexture(`paintings/${name}.png`);
   texture.encoding = sRGBEncoding;
   const geometry = new PlaneGeometry(1, 1.3);

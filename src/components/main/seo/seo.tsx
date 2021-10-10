@@ -9,12 +9,12 @@ interface SEOProps {
   title: string;
 }
 
-const Seo: React.FC<SEOProps> = ({
+const Seo = ({
   description = "",
   lang = "en",
   meta = [],
   title = "",
-}) => {
+}: SEOProps): JSX.Element => {
   const { site } = useStaticQuery(
     graphql`
       query {

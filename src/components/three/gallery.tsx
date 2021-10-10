@@ -10,7 +10,7 @@ interface GalleryProps {
   setFloor: Dispatch<SetStateAction<Mesh | undefined>>;
 }
 
-const Gallery: React.FC<GalleryProps> = ({ setFloor }) => {
+const Gallery = ({ setFloor }: GalleryProps): JSX.Element => {
   const { nodes, scene } = useGLTF(filePath);
 
   useEffect(() => {

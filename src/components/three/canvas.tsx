@@ -6,7 +6,7 @@ import Painting from "components/three/painting";
 import { Loader as CanvasLoader, Preload } from "@react-three/drei";
 import { Mesh } from "three";
 
-const IndexPage: React.FC = () => {
+const IndexPage = (): JSX.Element => {
   const [floor, setFloor] = useState<Mesh>();
 
   return (
