@@ -5,10 +5,10 @@ import Header from "components/main/header/header";
 import "./layout.scss";
 
 interface LayoutProps {
-  children: JSX.Element[] | JSX.Element;
+  children: React.ReactNode;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout = ({ children }: LayoutProps): JSX.Element => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
