@@ -20,7 +20,11 @@ const IndexPage = (): JSX.Element => {
           <Preload all />
         </Suspense>
       </Canvas>
-      <CanvasLoader />
+      <CanvasLoader
+        barStyles={{ height: "10px" }}
+        dataStyles={{ fontSize: "14px" }}
+        dataInterpolation={(percent) => `Loading ${percent.toFixed(0)}%`}
+      />
     </>
   );
 };
