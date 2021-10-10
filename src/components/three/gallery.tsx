@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { Euler, Mesh } from "three";
 import Config from "config";
 import { useGLTF } from "@react-three/drei";
@@ -7,19 +7,19 @@ const rotation = new Euler(0, 1.57, 0, "XYZ");
 const filePath = "/vrgallerygltf/galleryedit.gltf";
 
 interface GalleryProps {
-  setFloor: (mesh: Mesh) => void;
+  setFloor: Dispatch<SetStateAction<Mesh | undefined>>;
 }
 
 const Gallery: React.FC<GalleryProps> = ({ setFloor }) => {
-  const gltf = useGLTF(filePath);
+  const { nodes, scene } = useGLTF(filePath);
 
   useEffect(() => {
-    setFloor(gltf.nodes.Cube001_floormat_0);
+    setFloor(nodes.Cube001_floormat_0);
   });
 
   return (
     <primitive
-      object={gltf.scene}
+      object={scene}
       position={[0, 0, 0]}
       rotation={rotation}
       scale={Config.gallery.scale}
