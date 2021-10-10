@@ -1,6 +1,6 @@
 # ani-gallery
 
-An university project I am rebuilding ([Legacy site](https://ani.gallery/)) for my girlfriend where she can showcase her art. Apart from making her happy, I will see what [Gatsby](https://www.gatsbyjs.org/), [TypeScript](https://www.typescriptlang.org/) and [Three.js](https://threejs.org/) can teach me.
+A university project I am rebuilding ([Legacy site](https://ani.gallery/)) for my girlfriend where she can showcase her art. Apart from making her happy, I will see what [Gatsby](https://www.gatsbyjs.org/), [TypeScript](https://www.typescriptlang.org/), and [Three.js](https://threejs.org/) can teach me.
 
 ![](ani-gallery-demo.gif)
 
