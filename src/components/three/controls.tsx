@@ -15,7 +15,7 @@ interface ControlsProps {
 const Controls = ({ floor }: ControlsProps): JSX.Element => {
   const defaultCamera = useThree(({ camera }) => camera);
   const deviceOrientationControls = useRef<DeviceOrientationControlsProps>();
-  const hasCursor = matchMedia("(pointer:fine)").matches;
+  const hasCursor = window.matchMedia("(pointer:fine)").matches;
 
   useEffect(() => {
     defaultCamera.position.set(0, Config.player.personHeight, 0);
